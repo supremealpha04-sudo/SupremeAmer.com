@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SupremeAmer | Premier Investment Platform</title>
+    <meta name="description" content="Connect with groundbreaking technology projects and earn competitive returns.">
+    <link rel="manifest" href="manifest.json">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <div class="header-container">
+                <a href="index.html" class="logo">
+                    <div class="logo-icon">SA</div>
+                    <div class="logo-text">SupremeAmer</div>
+                </a>
+                <div class="main-nav">
+                    <a href="index.html" class="active">Home</a>
+                    <a href="about.html">About</a>
+                    <a href="projects.html">Projects</a>
+                    <a href="profile.html">Profile</a>
+                </div>
+                <div class="auth-buttons" id="authButtons">
+                    <button class="btn btn-outline" onclick="showLoginModal()">Login</button>
+                    <button class="btn btn-primary" onclick="showRegisterModal()">Sign Up</button>
+                </div>
+                <div class="user-menu" id="userMenu" style="display: none;">
+                    <span id="userName"></span>
+                    <button class="btn btn-outline" onclick="logout()">Logout</button>
+                </div>
+                <div class="mobile-menu">
+                    <i class="fas fa-bars"></i>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <h1>Invest in the<br>Future of Innovation</h1>
+                <p>Connect with groundbreaking technology projects and earn competitive returns. Join thousands of investors already building tomorrow's economy.</p>
+                <a href="projects.html" class="btn btn-secondary">Explore Projects →</a>
+                <div class="hero-stats">
+                    <div class="hero-stat">
+                        <div class="hero-stat-number">$50M+</div>
+                        <div class="hero-stat-label">Total Invested</div>
+                    </div>
+                    <div class="hero-stat">
+                        <div class="hero-stat-number">200+</div>
+                        <div class="hero-stat-label">Projects</div>
+                    </div>
+                    <div class="hero-stat">
+                        <div class="hero-stat-number">34%</div>
+                        <div class="hero-stat-label">Avg ROI</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Featured Projects -->
+    <section class="projects-section">
+        <div class="container">
+            <div class="section-title">
+                <h2>Featured Opportunities</h2>
+                <p>Hand-picked projects with the strongest fundamentals and growth potential.</p>
+            </div>
+            <div class="projects-grid" id="projectsGrid">
+                <!-- Loaded dynamically -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Chat Widget -->
+    <div class="chat-widget">
+        <button class="chat-button" onclick="toggleChat()">
+            <i class="fas fa-headset"></i>
+        </button>
+        <div class="chat-container" id="chatContainer">
+            <div class="chat-header">
+                <span><i class="fas fa-headset"></i> Support Chat</span>
+                <button onclick="toggleChat()" style="background: none; border: none; color: white; cursor: pointer;">✕</button>
+            </div>
+            <div class="chat-messages" id="chatMessages"></div>
+            <div class="chat-input-container">
+                <input type="text" class="chat-input" id="chatInput" placeholder="Type your message...">
+                <button class="chat-send" onclick="sendChatMessage()">Send</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Theme Toggle -->
+    <button class="theme-toggle" onclick="toggleTheme()">
+        <i class="fas fa-moon"></i>
+    </button>
+
+    <!-- Bottom Navigation -->
+    <nav class="bottom-nav">
+        <a href="index.html" class="bottom-nav-item active">
+            <i class="fas fa-home"></i>
+            <span>Home</span>
+        </a>
+        <a href="about.html" class="bottom-nav-item">
+            <i class="fas fa-info-circle"></i>
+            <span>About</span>
+        </a>
+        <a href="projects.html" class="bottom-nav-item">
+            <i class="fas fa-rocket"></i>
+            <span>Projects</span>
+        </a>
+        <a href="profile.html" class="bottom-nav-item">
+            <i class="fas fa-user"></i>
+            <span>Profile</span>
+        </a>
+    </nav>
+
+    <!-- Horizontal Legal Navigation -->
+    <div class="legal-nav">
+        <div class="container">
+            <div class="legal-nav-links">
+                <a href="#">Privacy Policy</a>
+                <a href="#">Terms of Service</a>
+                <a href="#">Risk Disclosure</a>
+                <a href="#">Cookie Policy</a>
+                <a href="#">GDPR Compliance</a>
+                <a href="#">Contact Legal</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h3>SupremeAmer</h3>
+                    <p>Connecting visionary investors with groundbreaking projects since 2015.</p>
+                </div>
+                <div class="footer-column">
+                    <h3>Quick Links</h3>
+                    <ul class="footer-links">
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="about.html">About</a></li>
+                        <li><a href="projects.html">Projects</a></li>
+                        <li><a href="profile.html">Profile</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Contact</h3>
+                    <ul class="footer-links">
+                        <li><a href="mailto:invest@supremeamer.com">invest@supremeamer.com</a></li>
+                        <li><a href="tel:+15551234567">+1 (555) 123-4567</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="copyright">
+                <p>&copy; 2026 SupremeAmer Investment Platform. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Auth Modal -->
+    <div class="modal-overlay" id="authModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h2 id="modalTitle">Login</h2>
+                <button class="modal-close" onclick="closeModal('authModal')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="authForm">
+                    <div class="form-group">
+                        <label>Email</label>
+                        <input type="email" id="loginEmail" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Password</label>
+                        <input type="password" id="loginPassword" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary" style="width: 100%;">Login</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Invest Modal -->
+    <div class="modal-overlay" id="investModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h2>Confirm Investment</h2>
+                <button class="modal-close" onclick="closeModal('investModal')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div id="investProjectInfo"></div>
+                <form id="investmentForm">
+                    <div class="form-group">
+                        <label>Investment Amount ($)</label>
+                        <input type="number" id="investmentAmount" min="1000" step="1000" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Investment Plan</label>
+                        <select id="investmentPlan">
+                            <option value="seed">Seed Sponsor - $5,000</option>
+                            <option value="growth">Growth Partner - $25,000</option>
+                            <option value="visionary">Visionary Backer - $100,000</option>
+                        </select>
+                    </div>
+                    <input type="hidden" id="investProjectId">
+                </form>
+            </div>
+            <div class="modal-header">
+                <button class="btn btn-primary" style="width: 100%;" onclick="submitInvestment()">Confirm Investment</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Detail Modal -->
+    <div class="modal-overlay" id="detailModal">
+        <div class="modal" style="max-width: 700px;">
+            <div class="modal-header">
+                <h2 id="detailTitle">Project Details</h2>
+                <button class="modal-close" onclick="closeModal('detailModal')">&times;</button>
+            </div>
+            <div class="modal-body" id="detailContent"></div>
+            <div class="modal-header">
+                <button class="btn btn-secondary" onclick="closeModal('detailModal')">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/config.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/chat.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>
