@@ -3,81 +3,1849 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SupremeAmer | Premier Investment Platform</title>
-    <meta name="description" content="Connect with groundbreaking technology projects and earn competitive returns.">
+    <title>SupremeAmer | Investment & Sponsorship Platform</title>
+    <meta name="description" content="SupremeAmer connects visionary investors with groundbreaking projects. Discover, sponsor, and invest in the next generation of innovative applications.">
+    <meta name="theme-color" content="#1a3a8f">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <link rel="manifest" href="manifest.json">
+    <link rel="apple-touch-icon" href="icons/icon-192x192.png">
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="css/style.css">
+    <style>
+        /* ============================================
+           YOUR ORIGINAL CSS - FULLY PRESERVED
+           ============================================ */
+        :root {
+            --primary: #1a3a8f;
+            --primary-light: #2a4fb8;
+            --primary-dark: #0f2a6d;
+            --secondary: #ff6b00;
+            --secondary-light: #ff8c3a;
+            --secondary-dark: #e55e00;
+            --accent: #00d4ff;
+            --dark: #0f172a;
+            --dark-light: #1e293b;
+            --light: #f8fafc;
+            --gray: #64748b;
+            --gray-light: #cbd5e1;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --error: #ef4444;
+            --gradient-primary: linear-gradient(135deg, var(--primary), var(--primary-light));
+            --gradient-secondary: linear-gradient(135deg, var(--secondary), var(--secondary-light));
+            --gradient-dark: linear-gradient(135deg, var(--dark), var(--dark-light));
+            --shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 20px 50px rgba(0, 0, 0, 0.15);
+        }
+        
+        /* Dark Mode Variables */
+        [data-theme="dark"] {
+            --light: #0f172a;
+            --dark: #f8fafc;
+            --dark-light: #e2e8f0;
+            --gray: #94a3b8;
+            --gray-light: #334155;
+            --bg-primary: #0f172a;
+            --bg-secondary: #1e293b;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+        
+        html {
+            scroll-behavior: smooth;
+        }
+        
+        body {
+            background-color: var(--light);
+            color: var(--dark);
+            line-height: 1.6;
+            overflow-x: hidden;
+            padding-bottom: 70px;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+        
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+        
+        /* Theme Toggle Button */
+        .theme-toggle-btn {
+            position: fixed;
+            bottom: 100px;
+            right: 20px;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: var(--gradient-primary);
+            color: white;
+            border: none;
+            cursor: pointer;
+            z-index: 1000;
+            box-shadow: var(--shadow);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            transition: transform 0.3s;
+        }
+        
+        .theme-toggle-btn:hover {
+            transform: scale(1.1);
+        }
+        
+        /* Install Banner */
+        .install-banner {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: var(--gradient-primary);
+            color: white;
+            padding: 12px 20px;
+            z-index: 1001;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+        }
+        
+        .install-banner.show {
+            display: flex;
+        }
+        
+        .install-banner span {
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+        
+        .install-banner button {
+            background: white;
+            color: var(--primary);
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            font-size: 0.85rem;
+        }
+        
+        .install-banner .close-banner {
+            background: transparent;
+            color: white;
+            padding: 4px;
+            margin-left: 10px;
+        }
+        
+        /* Offline Indicator */
+        .offline-indicator {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: var(--warning);
+            color: white;
+            text-align: center;
+            padding: 8px;
+            z-index: 1000;
+            font-weight: 600;
+            font-size: 0.85rem;
+        }
+        
+        .offline-indicator.show {
+            display: block;
+        }
+        
+        /* Header */
+        header {
+            background-color: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.08);
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 999;
+            transition: all 0.3s ease;
+        }
+        
+        [data-theme="dark"] header {
+            background-color: rgba(15, 23, 42, 0.95);
+        }
+        
+        header.scrolled {
+            padding: 3px 0;
+            background-color: rgba(255, 255, 255, 0.98);
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+        }
+        
+        [data-theme="dark"] header.scrolled {
+            background-color: rgba(15, 23, 42, 0.98);
+        }
+        
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            transition: all 0.3s ease;
+        }
+        
+        header.scrolled .navbar {
+            padding: 8px 0;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        
+        .logo-icon {
+            width: 36px;
+            height: 36px;
+            background: var(--gradient-primary);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 10px;
+            color: white;
+            font-weight: 700;
+            font-size: 16px;
+        }
+        
+        .logo-text {
+            font-size: 1.3rem;
+            font-weight: 800;
+            color: var(--primary);
+        }
+        
+        .nav-links {
+            display: flex;
+            list-style: none;
+            align-items: center;
+        }
+        
+        .nav-links li {
+            margin-left: 25px;
+            position: relative;
+        }
+        
+        .nav-links a {
+            text-decoration: none;
+            color: var(--dark);
+            font-weight: 500;
+            transition: color 0.3s;
+            position: relative;
+            cursor: pointer;
+            font-size: 0.95rem;
+        }
+        
+        .nav-links a:after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -5px;
+            left: 0;
+            background-color: var(--secondary);
+            transition: width 0.3s ease;
+        }
+        
+        .nav-links a:hover:after {
+            width: 100%;
+        }
+        
+        .nav-links a:hover {
+            color: var(--primary);
+        }
+        
+        .nav-links a.active {
+            color: var(--primary);
+        }
+        
+        .nav-links a.active:after {
+            width: 100%;
+        }
+        
+        .admin-badge {
+            background: var(--gradient-secondary);
+            color: white;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 0.7rem;
+            margin-left: 6px;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+        
+        .cta-button {
+            background: var(--gradient-secondary);
+            color: white;
+            padding: 10px 22px;
+            border-radius: 8px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(255, 107, 0, 0.3);
+            display: inline-block;
+            border: none;
+            cursor: pointer;
+            font-size: 0.9rem;
+        }
+        
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(255, 107, 0, 0.4);
+        }
+        
+        .cta-button.outline {
+            background: transparent;
+            border: 2px solid white;
+            box-shadow: none;
+        }
+        
+        .cta-button.outline:hover {
+            background: white;
+            color: var(--primary);
+        }
+        
+        .cta-button.small {
+            padding: 6px 14px;
+            font-size: 0.8rem;
+        }
+        
+        .mobile-menu {
+            display: none;
+            font-size: 1.3rem;
+            cursor: pointer;
+            color: var(--dark);
+        }
+        
+        /* Page Sections */
+        .page {
+            display: none;
+            min-height: 100vh;
+            padding: 80px 0 50px;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.5s ease, transform 0.5s ease;
+        }
+        
+        .page.active {
+            display: block;
+            opacity: 1;
+            transform: translateY(0);
+            animation: fadeIn 0.5s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        /* Home Page */
+        .home {
+            background: var(--gradient-primary);
+            color: white;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+        }
+        
+        .hero-content {
+            max-width: 700px;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .hero h1 {
+            font-size: 3.2rem;
+            margin-bottom: 15px;
+            line-height: 1.2;
+            font-weight: 900;
+            animation: slideInLeft 1s ease;
+        }
+        
+        .hero p {
+            font-size: 1.1rem;
+            margin-bottom: 25px;
+            opacity: 0.9;
+            animation: slideInLeft 1s ease 0.2s both;
+        }
+        
+        .hero-buttons {
+            display: flex;
+            gap: 12px;
+            animation: slideInLeft 1s ease 0.4s both;
+            flex-wrap: wrap;
+        }
+        
+        @keyframes slideInLeft {
+            from { opacity: 0; transform: translateX(-50px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        
+        .secondary-button {
+            background: rgba(255, 255, 255, 0.15);
+            color: white;
+            padding: 10px 22px;
+            border-radius: 8px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            font-size: 0.9rem;
+        }
+        
+        .secondary-button:hover {
+            background: rgba(255, 255, 255, 0.25);
+            transform: translateY(-3px);
+        }
+        
+        .hero-image {
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            width: 50%;
+            height: 100%;
+            background: url('https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80') center/cover no-repeat;
+            clip-path: polygon(25% 0%, 100% 0%, 100% 100%, 0% 100%);
+        }
+        
+        .floating-elements {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: 1;
+        }
+        
+        .floating-element {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            animation: float 15s infinite linear;
+        }
+        
+        .floating-element:nth-child(1) {
+            width: 60px;
+            height: 60px;
+            top: 20%;
+            left: 10%;
+            animation-delay: 0s;
+        }
+        
+        .floating-element:nth-child(2) {
+            width: 90px;
+            height: 90px;
+            top: 60%;
+            left: 80%;
+            animation-delay: 2s;
+        }
+        
+        .floating-element:nth-child(3) {
+            width: 50px;
+            height: 50px;
+            top: 80%;
+            left: 20%;
+            animation-delay: 4s;
+        }
+        
+        @keyframes float {
+            0% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(180deg); }
+            100% { transform: translateY(0) rotate(360deg); }
+        }
+        
+        /* Section Styles */
+        .section-title {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        
+        .section-title h2 {
+            font-size: 2.4rem;
+            color: var(--primary);
+            margin-bottom: 12px;
+            font-weight: 800;
+        }
+        
+        .section-title p {
+            color: var(--gray);
+            max-width: 700px;
+            margin: 0 auto;
+            font-size: 1rem;
+        }
+        
+        .section-title.light h2, .section-title.light p {
+            color: white;
+        }
+        
+        /* Stats Section */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+        
+        .stat-card {
+            text-align: center;
+            padding: 25px 15px;
+            border-radius: 10px;
+            background: white;
+            box-shadow: var(--shadow);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        
+        [data-theme="dark"] .stat-card {
+            background: var(--dark-light);
+        }
+        
+        .stat-card.animate {
+            animation: fadeInUp 0.6s ease forwards;
+        }
+        
+        @keyframes fadeInUp {
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .stat-card:nth-child(1) { animation-delay: 0.1s; }
+        .stat-card:nth-child(2) { animation-delay: 0.2s; }
+        .stat-card:nth-child(3) { animation-delay: 0.3s; }
+        .stat-card:nth-child(4) { animation-delay: 0.4s; }
+        
+        .stat-card:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: var(--gradient-primary);
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-8px);
+        }
+        
+        .stat-icon {
+            width: 60px;
+            height: 60px;
+            margin: 0 auto 15px;
+            background: var(--gradient-primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+        }
+        
+        .stat-number {
+            font-size: 2.2rem;
+            font-weight: 800;
+            color: var(--primary);
+            margin-bottom: 5px;
+        }
+        
+        .stat-text {
+            color: var(--gray);
+            font-weight: 500;
+            font-size: 0.9rem;
+        }
+        
+        /* Projects Section - Investment Cards */
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 30px;
+        }
+        
+        .project-card {
+            background: white;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: all 0.4s ease;
+            position: relative;
+            border: 1px solid rgba(0,0,0,0.05);
+        }
+        
+        [data-theme="dark"] .project-card {
+            background: var(--dark-light);
+        }
+        
+        .project-card:hover {
+            transform: translateY(-10px);
+            box-shadow: var(--shadow-lg);
+        }
+        
+        .project-image {
+            height: 220px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .project-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+        
+        .project-card:hover .project-image img {
+            transform: scale(1.1);
+        }
+        
+        .project-badge {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            background: var(--gradient-secondary);
+            color: white;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            z-index: 2;
+        }
+        
+        .project-badge.closed {
+            background: var(--gray);
+        }
+        
+        .project-badge.funded {
+            background: var(--success);
+        }
+        
+        .project-content {
+            padding: 25px;
+        }
+        
+        .project-category {
+            color: var(--secondary);
+            font-weight: 600;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+        }
+        
+        .project-card h3 {
+            font-size: 1.4rem;
+            margin-bottom: 12px;
+            color: var(--dark);
+            line-height: 1.3;
+        }
+        
+        .project-description {
+            color: var(--gray);
+            margin-bottom: 20px;
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+        
+        .project-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding: 15px 0;
+            border-top: 1px solid var(--gray-light);
+            border-bottom: 1px solid var(--gray-light);
+        }
+        
+        .meta-item {
+            text-align: center;
+        }
+        
+        .meta-value {
+            font-size: 1.2rem;
+            font-weight: 800;
+            color: var(--primary);
+            display: block;
+        }
+        
+        .meta-label {
+            font-size: 0.75rem;
+            color: var(--gray);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: var(--gray-light);
+            border-radius: 4px;
+            overflow: hidden;
+            margin-bottom: 20px;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: var(--gradient-primary);
+            border-radius: 4px;
+            transition: width 0.5s ease;
+        }
+        
+        .project-footer {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .btn-full {
+            flex: 1;
+            text-align: center;
+        }
+        
+        .btn-invest {
+            background: var(--gradient-primary);
+            color: white;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            display: inline-block;
+            border: none;
+            cursor: pointer;
+            font-size: 0.95rem;
+            text-align: center;
+        }
+        
+        .btn-invest:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(26, 58, 143, 0.3);
+        }
+        
+        .btn-invest:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .btn-details {
+            background: transparent;
+            color: var(--primary);
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            display: inline-block;
+            border: 2px solid var(--primary);
+            cursor: pointer;
+            font-size: 0.95rem;
+            text-align: center;
+        }
+        
+        .btn-details:hover {
+            background: var(--primary);
+            color: white;
+        }
+        
+        /* Investment Plans */
+        .plans-section {
+            background: var(--dark);
+            color: white;
+            padding: 60px 0;
+            margin: 40px 0;
+        }
+        
+        .plans-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+            margin-top: 30px;
+        }
+        
+        .plan-card {
+            background: var(--dark-light);
+            border-radius: 16px;
+            padding: 35px 25px;
+            text-align: center;
+            border: 2px solid transparent;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        
+        .plan-card:hover {
+            border-color: var(--secondary);
+            transform: translateY(-5px);
+        }
+        
+        .plan-card.featured {
+            border-color: var(--secondary);
+            transform: scale(1.05);
+        }
+        
+        .plan-card.featured:hover {
+            transform: scale(1.05) translateY(-5px);
+        }
+        
+        .plan-badge {
+            position: absolute;
+            top: -12px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--gradient-secondary);
+            color: white;
+            padding: 4px 16px;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 700;
+        }
+        
+        .plan-name {
+            font-size: 1.5rem;
+            font-weight: 800;
+            margin-bottom: 10px;
+        }
+        
+        .plan-price {
+            font-size: 2.5rem;
+            font-weight: 900;
+            color: var(--accent);
+            margin-bottom: 20px;
+        }
+        
+        .plan-price span {
+            font-size: 1rem;
+            color: var(--gray);
+            font-weight: 400;
+        }
+        
+        .plan-features {
+            list-style: none;
+            margin-bottom: 25px;
+            text-align: left;
+        }
+        
+        .plan-features li {
+            padding: 8px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+        }
+        
+        .plan-features li i {
+            color: var(--success);
+            margin-right: 10px;
+        }
+        
+        /* Modal */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.7);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            backdrop-filter: blur(5px);
+        }
+        
+        .modal-overlay.active {
+            display: flex;
+        }
+        
+        .modal {
+            background: white;
+            border-radius: 16px;
+            max-width: 500px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+            animation: modalSlide 0.3s ease;
+        }
+        
+        [data-theme="dark"] .modal {
+            background: var(--dark-light);
+        }
+        
+        @keyframes modalSlide {
+            from { opacity: 0; transform: translateY(-50px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .modal-header {
+            padding: 25px;
+            border-bottom: 1px solid var(--gray-light);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .modal-header h2 {
+            color: var(--primary);
+            font-size: 1.5rem;
+        }
+        
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--gray);
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            transition: all 0.3s;
+        }
+        
+        .modal-close:hover {
+            background: var(--gray-light);
+            color: var(--dark);
+        }
+        
+        .modal-body {
+            padding: 25px;
+        }
+        
+        .modal-footer {
+            padding: 20px 25px;
+            border-top: 1px solid var(--gray-light);
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+        }
+        
+        /* Form Styles */
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--dark);
+            font-size: 0.9rem;
+        }
+        
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid var(--gray-light);
+            border-radius: 8px;
+            font-size: 0.95rem;
+            transition: all 0.3s;
+            font-family: 'Inter', sans-serif;
+            background: var(--light);
+            color: var(--dark);
+        }
+        
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(26, 58, 143, 0.1);
+        }
+        
+        .form-group textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+        
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+        
+        /* Toast Notifications */
+        .toast-container {
+            position: fixed;
+            top: 80px;
+            right: 20px;
+            z-index: 3000;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        
+        .toast {
+            background: white;
+            border-radius: 12px;
+            padding: 16px 20px;
+            box-shadow: var(--shadow-lg);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            min-width: 300px;
+            animation: toastSlide 0.3s ease;
+            border-left: 4px solid var(--primary);
+        }
+        
+        [data-theme="dark"] .toast {
+            background: var(--dark-light);
+        }
+        
+        .toast.success {
+            border-left-color: var(--success);
+        }
+        
+        .toast.error {
+            border-left-color: var(--error);
+        }
+        
+        .toast.warning {
+            border-left-color: var(--warning);
+        }
+        
+        @keyframes toastSlide {
+            from { opacity: 0; transform: translateX(100%); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        
+        .toast-icon {
+            font-size: 1.2rem;
+        }
+        
+        .toast.success .toast-icon {
+            color: var(--success);
+        }
+        
+        .toast.error .toast-icon {
+            color: var(--error);
+        }
+        
+        .toast.warning .toast-icon {
+            color: var(--warning);
+        }
+        
+        .toast-content {
+            flex: 1;
+        }
+        
+        .toast-title {
+            font-weight: 700;
+            font-size: 0.95rem;
+            margin-bottom: 2px;
+        }
+        
+        .toast-message {
+            font-size: 0.85rem;
+            color: var(--gray);
+        }
+        
+        .toast-close {
+            background: none;
+            border: none;
+            color: var(--gray);
+            cursor: pointer;
+            padding: 4px;
+        }
+        
+        /* Chat Widget */
+        .chat-widget {
+            position: fixed;
+            bottom: 100px;
+            right: 90px;
+            z-index: 998;
+        }
+        
+        .chat-button {
+            width: 55px;
+            height: 55px;
+            border-radius: 50%;
+            background: var(--gradient-secondary);
+            color: white;
+            border: none;
+            cursor: pointer;
+            box-shadow: var(--shadow-lg);
+            font-size: 1.3rem;
+            transition: transform 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .chat-button:hover {
+            transform: scale(1.1);
+        }
+        
+        .chat-container {
+            position: absolute;
+            bottom: 70px;
+            right: 0;
+            width: 350px;
+            height: 450px;
+            background: white;
+            border-radius: 16px;
+            box-shadow: var(--shadow-lg);
+            display: none;
+            flex-direction: column;
+            overflow: hidden;
+            border: 1px solid var(--gray-light);
+        }
+        
+        [data-theme="dark"] .chat-container {
+            background: var(--dark-light);
+        }
+        
+        .chat-container.active {
+            display: flex;
+        }
+        
+        .chat-header {
+            background: var(--gradient-primary);
+            color: white;
+            padding: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .chat-messages {
+            flex: 1;
+            overflow-y: auto;
+            padding: 15px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        
+        .chat-message {
+            max-width: 80%;
+            padding: 10px 15px;
+            border-radius: 15px;
+            font-size: 0.85rem;
+        }
+        
+        .chat-message.user {
+            background: var(--primary);
+            color: white;
+            align-self: flex-end;
+            border-bottom-right-radius: 5px;
+        }
+        
+        .chat-message.support {
+            background: var(--gray-light);
+            color: var(--dark);
+            align-self: flex-start;
+            border-bottom-left-radius: 5px;
+        }
+        
+        .chat-input-container {
+            display: flex;
+            padding: 15px;
+            gap: 10px;
+            border-top: 1px solid var(--gray-light);
+        }
+        
+        .chat-input {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid var(--gray-light);
+            border-radius: 8px;
+            background: var(--light);
+            color: var(--dark);
+        }
+        
+        .chat-send {
+            padding: 10px 20px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+        
+        /* Loading States */
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255,255,255,0.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 1s ease-in-out infinite;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        .skeleton {
+            background: linear-gradient(90deg, var(--gray-light) 25%, #e2e8f0 50%, var(--gray-light) 75%);
+            background-size: 200% 100%;
+            animation: skeleton 1.5s infinite;
+            border-radius: 8px;
+        }
+        
+        @keyframes skeleton {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
+        
+        /* Bottom Navigation Bar - NEW */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: white;
+            box-shadow: 0 -2px 20px rgba(0,0,0,0.08);
+            z-index: 998;
+            display: flex;
+            justify-content: space-around;
+            padding: 8px 0;
+            border-top: 1px solid var(--gray-light);
+        }
+        
+        [data-theme="dark"] .bottom-nav {
+            background: var(--dark-light);
+        }
+        
+        .bottom-nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-decoration: none;
+            color: var(--gray);
+            padding: 6px 20px;
+            border-radius: 8px;
+            transition: all 0.3s;
+            cursor: pointer;
+            border: none;
+            background: none;
+            font-family: 'Inter', sans-serif;
+        }
+        
+        .bottom-nav-item i {
+            font-size: 1.3rem;
+            margin-bottom: 4px;
+        }
+        
+        .bottom-nav-item span {
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+        
+        .bottom-nav-item:hover, .bottom-nav-item.active {
+            color: var(--primary);
+        }
+        
+        .bottom-nav-item.active {
+            background: rgba(26, 58, 143, 0.1);
+        }
+        
+        /* Horizontal Legal Navigation - NEW */
+        .legal-nav {
+            background: var(--bg-secondary);
+            border-top: 1px solid var(--border);
+            border-bottom: 1px solid var(--border);
+            padding: 15px 0;
+            margin-top: 60px;
+        }
+        
+        .legal-nav-links {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            flex-wrap: wrap;
+        }
+        
+        .legal-nav-links a {
+            text-decoration: none;
+            color: var(--gray);
+            font-size: 0.85rem;
+            transition: color 0.3s;
+        }
+        
+        .legal-nav-links a:hover {
+            color: var(--primary);
+        }
+        
+        /* About Page */
+        .about-hero {
+            background: var(--gradient-dark);
+            color: white;
+            padding: 100px 0 60px;
+        }
+        
+        .about-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 50px;
+            align-items: center;
+        }
+        
+        .about-image {
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: var(--shadow-lg);
+        }
+        
+        .about-image img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+        
+        .about-content h2 {
+            font-size: 2.2rem;
+            margin-bottom: 20px;
+            font-weight: 800;
+        }
+        
+        .about-content p {
+            color: rgba(255,255,255,0.8);
+            margin-bottom: 20px;
+            line-height: 1.8;
+        }
+        
+        .values-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 25px;
+            margin-top: 40px;
+        }
+        
+        .value-card {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+            text-align: center;
+        }
+        
+        [data-theme="dark"] .value-card {
+            background: var(--dark-light);
+        }
+        
+        .value-icon {
+            width: 70px;
+            height: 70px;
+            background: var(--gradient-primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            color: white;
+            font-size: 1.8rem;
+        }
+        
+        .value-card h3 {
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+            color: var(--primary);
+        }
+        
+        .value-card p {
+            color: var(--gray);
+            font-size: 0.9rem;
+        }
+        
+        /* Team Section */
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+        
+        .team-card {
+            background: white;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            text-align: center;
+            transition: all 0.3s;
+        }
+        
+        [data-theme="dark"] .team-card {
+            background: var(--dark-light);
+        }
+        
+        .team-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .team-avatar {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            margin: 30px auto 20px;
+            background: var(--gradient-primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 3rem;
+        }
+        
+        .team-card h4 {
+            font-size: 1.2rem;
+            margin-bottom: 5px;
+        }
+        
+        .team-role {
+            color: var(--secondary);
+            font-weight: 600;
+            font-size: 0.9rem;
+            margin-bottom: 15px;
+        }
+        
+        .team-bio {
+            color: var(--gray);
+            padding: 0 20px 25px;
+            font-size: 0.9rem;
+        }
+        
+        /* Contact Section */
+        .contact-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 40px;
+        }
+        
+        .contact-info h3 {
+            margin-bottom: 15px;
+            color: var(--primary);
+            font-size: 1.3rem;
+        }
+        
+        .contact-details {
+            margin-bottom: 25px;
+        }
+        
+        .contact-item {
+            display: flex;
+            margin-bottom: 15px;
+            opacity: 0;
+            transform: translateX(-20px);
+        }
+        
+        .contact-item.animate {
+            animation: slideInRight 0.6s ease forwards;
+        }
+        
+        @keyframes slideInRight {
+            to { opacity: 1; transform: translateX(0); }
+        }
+        
+        .contact-item:nth-child(1) { animation-delay: 0.1s; }
+        .contact-item:nth-child(2) { animation-delay: 0.2s; }
+        .contact-item:nth-child(3) { animation-delay: 0.3s; }
+        
+        .contact-icon {
+            width: 45px;
+            height: 45px;
+            background: var(--gradient-primary);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 12px;
+            flex-shrink: 0;
+        }
+        
+        .contact-text h4 {
+            margin-bottom: 4px;
+            font-size: 1rem;
+        }
+        
+        .contact-text p {
+            color: var(--gray);
+            font-size: 0.9rem;
+        }
+        
+        .contact-form input,
+        .contact-form textarea {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 15px;
+            border: 2px solid var(--gray-light);
+            border-radius: 8px;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+            background: var(--light);
+            color: var(--dark);
+        }
+        
+        .contact-form input:focus,
+        .contact-form textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(26, 58, 143, 0.1);
+        }
+        
+        .contact-form textarea {
+            height: 130px;
+            resize: vertical;
+        }
+        
+        /* Profile Page Styles */
+        .profile-header {
+            background: var(--gradient-primary);
+            color: white;
+            padding: 100px 0 60px;
+            text-align: center;
+        }
+        
+        .profile-avatar {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            font-size: 2.5rem;
+            color: var(--primary);
+        }
+        
+        .profile-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin: 40px 0;
+        }
+        
+        .profile-stat-card {
+            background: white;
+            padding: 25px;
+            border-radius: 16px;
+            text-align: center;
+            box-shadow: var(--shadow);
+        }
+        
+        [data-theme="dark"] .profile-stat-card {
+            background: var(--dark-light);
+        }
+        
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+        }
+        
+        .empty-state i {
+            font-size: 4rem;
+            color: var(--gray-light);
+            margin-bottom: 20px;
+        }
+        
+        .empty-state h3 {
+            color: var(--dark);
+            margin-bottom: 10px;
+        }
+        
+        .empty-state p {
+            color: var(--gray);
+            max-width: 400px;
+            margin: 0 auto;
+        }
+        
+        /* Footer */
+        footer {
+            background-color: var(--dark);
+            color: white;
+            padding: 60px 0 90px;
+        }
+        
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+        
+        .footer-column h3 {
+            font-size: 1.1rem;
+            margin-bottom: 20px;
+            color: white;
+            position: relative;
+            padding-bottom: 8px;
+        }
+        
+        .footer-column h3:after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 35px;
+            height: 2px;
+            background: var(--secondary);
+        }
+        
+        .footer-links {
+            list-style: none;
+        }
+        
+        .footer-links li {
+            margin-bottom: 10px;
+        }
+        
+        .footer-links a {
+            color: #b0b7c3;
+            text-decoration: none;
+            transition: color 0.3s;
+            display: flex;
+            align-items: center;
+            font-size: 0.9rem;
+            cursor: pointer;
+        }
+        
+        .footer-links a i {
+            margin-right: 8px;
+            font-size: 0.75rem;
+        }
+        
+        .footer-links a:hover {
+            color: white;
+            transform: translateX(5px);
+        }
+        
+        .social-links {
+            display: flex;
+            gap: 12px;
+        }
+        
+        .social-icon {
+            width: 36px;
+            height: 36px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            color: white;
+            text-decoration: none;
+        }
+        
+        .social-icon:hover {
+            background-color: var(--secondary);
+            transform: translateY(-5px);
+        }
+        
+        .copyright {
+            text-align: center;
+            padding-top: 25px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: #b0b7c3;
+            font-size: 0.85rem;
+        }
+        
+        /* Sync Status */
+        .sync-status {
+            position: fixed;
+            bottom: 80px;
+            right: 20px;
+            background: var(--dark);
+            color: white;
+            padding: 10px 16px;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            display: none;
+            align-items: center;
+            gap: 8px;
+            z-index: 997;
+            box-shadow: var(--shadow);
+        }
+        
+        .sync-status.show {
+            display: flex;
+        }
+        
+        .sync-status i {
+            color: var(--accent);
+        }
+        
+        /* Responsive */
+        @media (max-width: 992px) {
+            .about-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            
+            .hero-image {
+                width: 40%;
+            }
+            
+            .plan-card.featured {
+                transform: none;
+            }
+            
+            .plan-card.featured:hover {
+                transform: translateY(-5px);
+            }
+            
+            .chat-widget {
+                right: 20px;
+                bottom: 100px;
+            }
+            
+            .theme-toggle-btn {
+                bottom: 100px;
+                right: 20px;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                background: white;
+                flex-direction: column;
+                padding: 15px;
+                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+                border-radius: 0 0 10px 10px;
+            }
+            
+            [data-theme="dark"] .nav-links {
+                background: var(--dark-light);
+            }
+            
+            .nav-links.active {
+                display: flex;
+            }
+            
+            .nav-links li {
+                margin: 8px 0;
+            }
+            
+            .mobile-menu {
+                display: block;
+            }
+            
+            .hero h1 {
+                font-size: 2rem;
+            }
+            
+            .hero-buttons {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .section-title h2 {
+                font-size: 2rem;
+            }
+            
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .hero-image {
+                display: none;
+            }
+            
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+            
+            .projects-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .chat-container {
+                width: calc(100vw - 40px);
+                right: -20px;
+            }
+            
+            .legal-nav-links {
+                gap: 15px;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .page {
+                padding: 70px 0 40px;
+            }
+            
+            .modal {
+                margin: 10px;
+            }
+            
+            .bottom-nav-item {
+                padding: 4px 12px;
+            }
+            
+            .bottom-nav-item span {
+                font-size: 0.7rem;
+            }
+        }
+    </style>
 </head>
 <body>
-    <!-- Header -->
-    <header>
-        <div class="container">
-            <div class="header-container">
-                <a href="index.html" class="logo">
-                    <div class="logo-icon">SA</div>
-                    <div class="logo-text">SupremeAmer</div>
-                </a>
-                <div class="main-nav">
-                    <a href="index.html" class="active">Home</a>
-                    <a href="about.html">About</a>
-                    <a href="projects.html">Projects</a>
-                    <a href="profile.html">Profile</a>
-                </div>
-                <div class="auth-buttons" id="authButtons">
-                    <button class="btn btn-outline" onclick="showLoginModal()">Login</button>
-                    <button class="btn btn-primary" onclick="showRegisterModal()">Sign Up</button>
-                </div>
-                <div class="user-menu" id="userMenu" style="display: none;">
-                    <span id="userName"></span>
-                    <button class="btn btn-outline" onclick="logout()">Logout</button>
-                </div>
-                <div class="mobile-menu">
-                    <i class="fas fa-bars"></i>
-                </div>
-            </div>
+    <!-- Install Banner -->
+    <div class="install-banner" id="installBanner">
+        <span><i class="fas fa-download"></i> Install SupremeAmer App</span>
+        <div>
+            <button onclick="installApp()">Install</button>
+            <button class="close-banner" onclick="dismissInstall()"><i class="fas fa-times"></i></button>
         </div>
-    </header>
+    </div>
+    
+    <!-- Offline Indicator -->
+    <div class="offline-indicator" id="offlineIndicator">
+        <i class="fas fa-wifi-slash"></i> You're offline. Changes will sync when connection is restored.
+    </div>
+    
+    <!-- Toast Container -->
+    <div class="toast-container" id="toastContainer"></div>
+    
+    <!-- Sync Status -->
+    <div class="sync-status" id="syncStatus">
+        <i class="fas fa-sync-alt fa-spin"></i> Syncing with server...
+    </div>
 
-    <!-- Hero Section -->
-    <section class="hero">
-        <div class="container">
-            <div class="hero-content">
-                <h1>Invest in the<br>Future of Innovation</h1>
-                <p>Connect with groundbreaking technology projects and earn competitive returns. Join thousands of investors already building tomorrow's economy.</p>
-                <a href="projects.html" class="btn btn-secondary">Explore Projects →</a>
-                <div class="hero-stats">
-                    <div class="hero-stat">
-                        <div class="hero-stat-number">$50M+</div>
-                        <div class="hero-stat-label">Total Invested</div>
-                    </div>
-                    <div class="hero-stat">
-                        <div class="hero-stat-number">200+</div>
-                        <div class="hero-stat-label">Projects</div>
-                    </div>
-                    <div class="hero-stat">
-                        <div class="hero-stat-number">34%</div>
-                        <div class="hero-stat-label">Avg ROI</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Featured Projects -->
-    <section class="projects-section">
-        <div class="container">
-            <div class="section-title">
-                <h2>Featured Opportunities</h2>
-                <p>Hand-picked projects with the strongest fundamentals and growth potential.</p>
-            </div>
-            <div class="projects-grid" id="projectsGrid">
-                <!-- Loaded dynamically -->
-            </div>
-        </div>
-    </section>
+    <!-- Theme Toggle Button -->
+    <button class="theme-toggle-btn" id="themeToggle" onclick="toggleTheme()">
+        <i class="fas fa-moon"></i>
+    </button>
 
     <!-- Chat Widget -->
     <div class="chat-widget">
@@ -89,7 +1857,11 @@
                 <span><i class="fas fa-headset"></i> Support Chat</span>
                 <button onclick="toggleChat()" style="background: none; border: none; color: white; cursor: pointer;">✕</button>
             </div>
-            <div class="chat-messages" id="chatMessages"></div>
+            <div class="chat-messages" id="chatMessages">
+                <div class="chat-message support">
+                    Welcome to SupremeAmer Support! How can we help you today?
+                </div>
+            </div>
             <div class="chat-input-container">
                 <input type="text" class="chat-input" id="chatInput" placeholder="Type your message...">
                 <button class="chat-send" onclick="sendChatMessage()">Send</button>
@@ -97,29 +1869,378 @@
         </div>
     </div>
 
-    <!-- Theme Toggle -->
-    <button class="theme-toggle" onclick="toggleTheme()">
-        <i class="fas fa-moon"></i>
-    </button>
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <nav class="navbar">
+                <div class="logo" data-page="home">
+                    <div class="logo-icon">SA</div>
+                    <div class="logo-text">SupremeAmer</div>
+                </div>
+                <ul class="nav-links">
+                    <li><a data-page="home" class="active">Home</a></li>
+                    <li><a data-page="about">About</a></li>
+                    <li><a data-page="projects">Projects</a></li>
+                    <li><a data-page="contact">Contact</a></li>
+                    <li><a data-page="profile" id="profileLink" style="display:none;">Profile</a></li>
+                    <li><a data-page="admin" id="adminLink" style="display:none;"><i class="fas fa-lock"></i> Admin <span class="admin-badge">PRO</span></a></li>
+                    <li id="authNavBtn"><a class="cta-button" onclick="showLoginModal()">Login / Sign Up</a></li>
+                    <li id="logoutNavBtn" style="display:none;"><a class="cta-button outline" onclick="logout()">Logout</a></li>
+                </ul>
+                <div class="mobile-menu">
+                    <i class="fas fa-bars"></i>
+                </div>
+            </nav>
+        </div>
+    </header>
 
-    <!-- Bottom Navigation -->
+    <!-- Home Page -->
+    <section id="home" class="page active home">
+        <div class="container">
+            <div class="hero-content">
+                <h1>Invest in the Future of Innovation</h1>
+                <p>SupremeAmer connects visionary investors with groundbreaking projects. Discover, sponsor, and invest in the next generation of transformative applications and digital solutions.</p>
+                <div class="hero-buttons">
+                    <a class="cta-button" data-page="projects">Explore Projects</a>
+                    <a class="secondary-button" data-page="about">Learn More</a>
+                </div>
+            </div>
+            <div class="hero-image"></div>
+            <div class="floating-elements">
+                <div class="floating-element"></div>
+                <div class="floating-element"></div>
+                <div class="floating-element"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Page -->
+    <section id="about" class="page">
+        <div class="about-hero">
+            <div class="container">
+                <div class="about-grid">
+                    <div class="about-content">
+                        <h2>Building Tomorrow's Technology Today</h2>
+                        <p>SupremeAmer is a premier investment and sponsorship platform dedicated to connecting innovative projects with forward-thinking investors. Since 2015, we have facilitated over $50M in investments across 200+ successful projects.</p>
+                        <p>Our mission is to democratize access to high-quality investment opportunities in the technology sector, enabling both seasoned investors and newcomers to participate in the digital revolution.</p>
+                        <a class="cta-button" data-page="projects">View Investment Opportunities</a>
+                    </div>
+                    <div class="about-image">
+                        <img src="https://images.unsplash.com/photo-1556761175-5973dc0f32e7?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80" alt="SupremeAmer Team">
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="container" style="padding: 60px 0;">
+            <div class="section-title">
+                <h2>Our Core Values</h2>
+                <p>The principles that guide every investment and partnership we facilitate.</p>
+            </div>
+            <div class="values-grid">
+                <div class="value-card">
+                    <div class="value-icon">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <h3>Trust & Transparency</h3>
+                    <p>Every project undergoes rigorous vetting. We provide full disclosure on risks, returns, and project milestones.</p>
+                </div>
+                <div class="value-card">
+                    <div class="value-icon">
+                        <i class="fas fa-rocket"></i>
+                    </div>
+                    <h3>Innovation First</h3>
+                    <p>We prioritize cutting-edge projects that push boundaries and create real market disruption.</p>
+                </div>
+                <div class="value-card">
+                    <div class="value-icon">
+                        <i class="fas fa-handshake"></i>
+                    </div>
+                    <h3>Partnership Approach</h3>
+                    <p>We don't just broker deals. We build lasting relationships between investors and project founders.</p>
+                </div>
+                <div class="value-card">
+                    <div class="value-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <h3>Proven Returns</h3>
+                    <p>Our track record speaks for itself with an average ROI of 34% across our project portfolio.</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="container" style="padding-bottom: 60px;">
+            <div class="section-title">
+                <h2>Leadership Team</h2>
+                <p>Meet the experts behind SupremeAmer's investment success.</p>
+            </div>
+            <div class="team-grid">
+                <div class="team-card">
+                    <div class="team-avatar">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <h4>Alexandra Chen</h4>
+                    <div class="team-role">Chief Executive Officer</div>
+                    <div class="team-bio">15 years in venture capital and tech investment. Former partner at Sequoia Capital.</div>
+                </div>
+                <div class="team-card">
+                    <div class="team-avatar">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <h4>Marcus Johnson</h4>
+                    <div class="team-role">Chief Investment Officer</div>
+                    <div class="team-bio">Expert in portfolio management with $2B+ in managed assets across tech startups.</div>
+                </div>
+                <div class="team-card">
+                    <div class="team-avatar">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <h4>Sarah Williams</h4>
+                    <div class="team-role">Head of Operations</div>
+                    <div class="team-bio">Specializes in scaling operations for fintech platforms and investment marketplaces.</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Projects Page -->
+    <section id="projects" class="page">
+        <div class="container">
+            <div class="section-title">
+                <h2>Investment Opportunities</h2>
+                <p>Discover vetted projects seeking sponsorship and investment. Each opportunity has been rigorously analyzed by our team.</p>
+            </div>
+            
+            <div class="stats-grid" style="margin-bottom: 40px;">
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-rocket"></i>
+                    </div>
+                    <div class="stat-number" data-count="6">0</div>
+                    <div class="stat-text">Active Projects</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-dollar-sign"></i>
+                    </div>
+                    <div class="stat-number" data-count="2.3">0</div>
+                    <div class="stat-text">Million Raised</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <div class="stat-number" data-count="187">0</div>
+                    <div class="stat-text">Investors</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-percentage"></i>
+                    </div>
+                    <div class="stat-number" data-count="34">0</div>
+                    <div class="stat-text">Avg ROI %</div>
+                </div>
+            </div>
+            
+            <div id="projectsContainer">
+                <!-- Projects loaded dynamically -->
+                <div class="skeleton" style="height: 400px; width: 100%;"></div>
+            </div>
+        </div>
+        
+        <!-- Investment Plans Section -->
+        <div class="plans-section">
+            <div class="container">
+                <div class="section-title light">
+                    <h2>Investment Tiers</h2>
+                    <p>Choose the sponsorship level that matches your investment strategy and goals.</p>
+                </div>
+                <div class="plans-grid">
+                    <div class="plan-card">
+                        <div class="plan-name">Seed Sponsor</div>
+                        <div class="plan-price">$5,000<span>/project</span></div>
+                        <ul class="plan-features">
+                            <li><i class="fas fa-check"></i> Early access to new projects</li>
+                            <li><i class="fas fa-check"></i> Quarterly project reports</li>
+                            <li><i class="fas fa-check"></i> Investor dashboard access</li>
+                            <li><i class="fas fa-check"></i> 5% preferred return rate</li>
+                        </ul>
+                        <button class="cta-button outline" style="width: 100%;" onclick="requireAuth(() => showToast('Select a project first', 'warning'))">Get Started</button>
+                    </div>
+                    <div class="plan-card featured">
+                        <div class="plan-badge">Most Popular</div>
+                        <div class="plan-name">Growth Partner</div>
+                        <div class="plan-price">$25,000<span>/project</span></div>
+                        <ul class="plan-features">
+                            <li><i class="fas fa-check"></i> All Seed benefits included</li>
+                            <li><i class="fas fa-check"></i> Monthly project updates</li>
+                            <li><i class="fas fa-check"></i> Direct founder access</li>
+                            <li><i class="fas fa-check"></i> 12% preferred return rate</li>
+                            <li><i class="fas fa-check"></i> Board observer rights</li>
+                        </ul>
+                        <button class="cta-button" style="width: 100%;" onclick="requireAuth(() => showToast('Select a project first', 'warning'))">Get Started</button>
+                    </div>
+                    <div class="plan-card">
+                        <div class="plan-name">Visionary Backer</div>
+                        <div class="plan-price">$100,000<span>/project</span></div>
+                        <ul class="plan-features">
+                            <li><i class="fas fa-check"></i> All Growth benefits included</li>
+                            <li><i class="fas fa-check"></i> Weekly strategy calls</li>
+                            <li><i class="fas fa-check"></i> Co-investment opportunities</li>
+                            <li><i class="fas fa-check"></i> 18% preferred return rate</li>
+                            <li><i class="fas fa-check"></i> Board seat eligibility</li>
+                            <li><i class="fas fa-check"></i> Exclusive deal flow</li>
+                        </ul>
+                        <button class="cta-button outline" style="width: 100%;" onclick="requireAuth(() => showToast('Select a project first', 'warning'))">Get Started</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Page -->
+    <section id="contact" class="page">
+        <div class="container">
+            <div class="section-title">
+                <h2>Contact Us</h2>
+                <p>Get in touch with our investment team to discuss opportunities or partnerships.</p>
+            </div>
+            <div class="contact-grid">
+                <div class="contact-info">
+                    <h3>Get In Touch</h3>
+                    <div class="contact-details">
+                        <div class="contact-item">
+                            <div class="contact-icon">
+                                <i class="fas fa-map-marker-alt"></i>
+                            </div>
+                            <div class="contact-text">
+                                <h4>Our Office</h4>
+                                <p>123 Tech Avenue, Silicon Valley, CA 94025</p>
+                            </div>
+                        </div>
+                        <div class="contact-item">
+                            <div class="contact-icon">
+                                <i class="fas fa-phone"></i>
+                            </div>
+                            <div class="contact-text">
+                                <h4>Phone</h4>
+                                <p>+1 (555) 123-4567</p>
+                            </div>
+                        </div>
+                        <div class="contact-item">
+                            <div class="contact-icon">
+                                <i class="fas fa-envelope"></i>
+                            </div>
+                            <div class="contact-text">
+                                <h4>Email</h4>
+                                <p>invest@supremeamer.com</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="social-links">
+                        <a href="#" class="social-icon"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="social-icon"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="social-icon"><i class="fab fa-instagram"></i></a>
+                    </div>
+                </div>
+                <div class="contact-form">
+                    <form id="contactForm">
+                        <input type="text" placeholder="Your Name" required>
+                        <input type="email" placeholder="Your Email" required>
+                        <input type="text" placeholder="Subject" required>
+                        <textarea placeholder="Your Message" required></textarea>
+                        <button type="submit" class="cta-button">Send Message</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Profile Page -->
+    <section id="profile" class="page">
+        <div class="profile-header">
+            <div class="container">
+                <div class="profile-avatar">
+                    <i class="fas fa-user"></i>
+                </div>
+                <h1 id="profileName">Investor Profile</h1>
+                <p id="profileEmail"></p>
+            </div>
+        </div>
+        <div class="container" style="padding: 60px 0;">
+            <div class="profile-stats">
+                <div class="profile-stat-card">
+                    <h3>Total Invested</h3>
+                    <div class="stat-number" id="totalInvested">$0</div>
+                </div>
+                <div class="profile-stat-card">
+                    <h3>Active Investments</h3>
+                    <div class="stat-number" id="totalInvestments">0</div>
+                </div>
+                <div class="profile-stat-card">
+                    <h3>Expected Return</h3>
+                    <div class="stat-number" id="expectedReturn">$0</div>
+                </div>
+            </div>
+            <div class="section-title">
+                <h2>My Investment Portfolio</h2>
+                <p>Track your active investments and returns</p>
+            </div>
+            <div id="investmentsList" class="projects-grid"></div>
+        </div>
+    </section>
+
+    <!-- Admin Panel (Simplified) -->
+    <section id="admin" class="page">
+        <div class="container">
+            <div class="section-title">
+                <h2>Admin Dashboard</h2>
+                <p>Manage projects and investments</p>
+            </div>
+            <div class="stats-grid" style="margin-bottom: 30px;">
+                <div class="stat-card">
+                    <div class="stat-icon"><i class="fas fa-project-diagram"></i></div>
+                    <div class="stat-number" id="adminTotalProjects">0</div>
+                    <div class="stat-text">Total Projects</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon"><i class="fas fa-dollar-sign"></i></div>
+                    <div class="stat-number" id="adminTotalRaised">$0</div>
+                    <div class="stat-text">Total Raised</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon"><i class="fas fa-users"></i></div>
+                    <div class="stat-number" id="adminTotalInvestors">0</div>
+                    <div class="stat-text">Total Investors</div>
+                </div>
+            </div>
+            <button class="cta-button" onclick="logoutAdmin()" style="margin-bottom: 20px;">Logout Admin</button>
+        </div>
+    </section>
+
+    <!-- Bottom Navigation Bar -->
     <nav class="bottom-nav">
-        <a href="index.html" class="bottom-nav-item active">
+        <button class="bottom-nav-item active" onclick="navigateTo('home')" data-page="home">
             <i class="fas fa-home"></i>
             <span>Home</span>
-        </a>
-        <a href="about.html" class="bottom-nav-item">
+        </button>
+        <button class="bottom-nav-item" onclick="navigateTo('about')" data-page="about">
             <i class="fas fa-info-circle"></i>
             <span>About</span>
-        </a>
-        <a href="projects.html" class="bottom-nav-item">
+        </button>
+        <button class="bottom-nav-item" onclick="navigateTo('projects')" data-page="projects">
             <i class="fas fa-rocket"></i>
             <span>Projects</span>
-        </a>
-        <a href="profile.html" class="bottom-nav-item">
+        </button>
+        <button class="bottom-nav-item" onclick="navigateTo('contact')" data-page="contact">
+            <i class="fas fa-envelope"></i>
+            <span>Contact</span>
+        </button>
+        <button class="bottom-nav-item" onclick="navigateTo('profile')" data-page="profile" id="bottomProfileBtn" style="display:none;">
             <i class="fas fa-user"></i>
             <span>Profile</span>
-        </a>
+        </button>
     </nav>
 
     <!-- Horizontal Legal Navigation -->
@@ -137,55 +2258,86 @@
     </div>
 
     <!-- Footer -->
-    <footer class="footer">
+    <footer>
         <div class="container">
             <div class="footer-content">
                 <div class="footer-column">
                     <h3>SupremeAmer</h3>
-                    <p>Connecting visionary investors with groundbreaking projects since 2015.</p>
+                    <p>Connecting visionary investors with groundbreaking projects since 2015. Your trusted platform for tech investments.</p>
+                    <div class="social-links">
+                        <a href="#" class="social-icon"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="social-icon"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="social-icon"><i class="fab fa-instagram"></i></a>
+                    </div>
                 </div>
                 <div class="footer-column">
                     <h3>Quick Links</h3>
                     <ul class="footer-links">
-                        <li><a href="index.html">Home</a></li>
-                        <li><a href="about.html">About</a></li>
-                        <li><a href="projects.html">Projects</a></li>
-                        <li><a href="profile.html">Profile</a></li>
+                        <li><a onclick="navigateTo('home')"><i class="fas fa-chevron-right"></i> Home</a></li>
+                        <li><a onclick="navigateTo('about')"><i class="fas fa-chevron-right"></i> About</a></li>
+                        <li><a onclick="navigateTo('projects')"><i class="fas fa-chevron-right"></i> Projects</a></li>
+                        <li><a onclick="navigateTo('contact')"><i class="fas fa-chevron-right"></i> Contact</a></li>
                     </ul>
                 </div>
                 <div class="footer-column">
-                    <h3>Contact</h3>
+                    <h3>Investment</h3>
                     <ul class="footer-links">
-                        <li><a href="mailto:invest@supremeamer.com">invest@supremeamer.com</a></li>
-                        <li><a href="tel:+15551234567">+1 (555) 123-4567</a></li>
+                        <li><a onclick="navigateTo('projects')"><i class="fas fa-chevron-right"></i> Active Projects</a></li>
+                        <li><a onclick="navigateTo('projects')"><i class="fas fa-chevron-right"></i> Investment Tiers</a></li>
+                        <li><a href="#"><i class="fas fa-chevron-right"></i> How It Works</a></li>
+                        <li><a href="#"><i class="fas fa-chevron-right"></i> Risk Disclosure</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Contact Us</h3>
+                    <ul class="footer-links">
+                        <li><a href="#"><i class="fas fa-map-marker-alt"></i> 123 Tech Avenue, Silicon Valley, CA 94025</a></li>
+                        <li><a href="tel:+15551234567"><i class="fas fa-phone"></i> +1 (555) 123-4567</a></li>
+                        <li><a href="mailto:invest@supremeamer.com"><i class="fas fa-envelope"></i> invest@supremeamer.com</a></li>
                     </ul>
                 </div>
             </div>
             <div class="copyright">
-                <p>&copy; 2026 SupremeAmer Investment Platform. All rights reserved.</p>
+                <p>&copy; 2026 SupremeAmer Investment Platform. All Rights Reserved.</p>
             </div>
         </div>
     </footer>
 
-    <!-- Auth Modal -->
+    <!-- Auth Modal (Login/Register) -->
     <div class="modal-overlay" id="authModal">
         <div class="modal">
             <div class="modal-header">
-                <h2 id="modalTitle">Login</h2>
-                <button class="modal-close" onclick="closeModal('authModal')">&times;</button>
+                <h2 id="authModalTitle">Login</h2>
+                <button class="modal-close" onclick="closeModal('authModal')"><i class="fas fa-times"></i></button>
             </div>
             <div class="modal-body">
-                <form id="authForm">
-                    <div class="form-group">
-                        <label>Email</label>
-                        <input type="email" id="loginEmail" required>
+                <form id="authForm" onsubmit="handleAuthSubmit(event)">
+                    <div id="loginFields">
+                        <div class="form-group">
+                            <label>Email</label>
+                            <input type="email" id="authEmail" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Password</label>
+                            <input type="password" id="authPassword" required>
+                        </div>
                     </div>
-                    <div class="form-group">
-                        <label>Password</label>
-                        <input type="password" id="loginPassword" required>
+                    <div id="registerFields" style="display:none;">
+                        <div class="form-group">
+                            <label>Full Name</label>
+                            <input type="text" id="registerName">
+                        </div>
+                        <div class="form-group">
+                            <label>Confirm Password</label>
+                            <input type="password" id="confirmPassword">
+                        </div>
                     </div>
-                    <button type="submit" class="btn btn-primary" style="width: 100%;">Login</button>
+                    <button type="submit" class="cta-button" style="width:100%;" id="authSubmitBtn">Login</button>
                 </form>
+                <p style="text-align: center; margin-top: 20px;">
+                    <a href="#" onclick="switchAuthMode()" id="switchAuthLink">Don't have an account? Register</a>
+                </p>
             </div>
         </div>
     </div>
@@ -194,50 +2346,726 @@
     <div class="modal-overlay" id="investModal">
         <div class="modal">
             <div class="modal-header">
-                <h2>Confirm Investment</h2>
-                <button class="modal-close" onclick="closeModal('investModal')">&times;</button>
+                <h2><i class="fas fa-hand-holding-usd"></i> Invest in Project</h2>
+                <button class="modal-close" onclick="closeModal('investModal')"><i class="fas fa-times"></i></button>
             </div>
             <div class="modal-body">
-                <div id="investProjectInfo"></div>
-                <form id="investmentForm">
-                    <div class="form-group">
-                        <label>Investment Amount ($)</label>
-                        <input type="number" id="investmentAmount" min="1000" step="1000" required>
-                    </div>
+                <div id="investProjectDetails"></div>
+                <form id="investForm" onsubmit="handleInvest(event)">
                     <div class="form-group">
                         <label>Investment Plan</label>
-                        <select id="investmentPlan">
-                            <option value="seed">Seed Sponsor - $5,000</option>
-                            <option value="growth">Growth Partner - $25,000</option>
-                            <option value="visionary">Visionary Backer - $100,000</option>
+                        <select id="investPlan" required onchange="updateInvestAmount()">
+                            <option value="">Select plan</option>
+                            <option value="seed" data-amount="5000">Seed Sponsor - $5,000</option>
+                            <option value="growth" data-amount="25000">Growth Partner - $25,000</option>
+                            <option value="visionary" data-amount="100000">Visionary Backer - $100,000</option>
+                            <option value="custom">Custom Amount</option>
                         </select>
+                    </div>
+                    <div class="form-group" id="customAmountGroup" style="display: none;">
+                        <label>Custom Amount ($)</label>
+                        <input type="number" id="customAmount" min="1000" placeholder="Enter amount">
+                    </div>
+                    <div class="form-group">
+                        <label>Your Name</label>
+                        <input type="text" id="investorName" required placeholder="Full name">
+                    </div>
+                    <div class="form-group">
+                        <label>Email</label>
+                        <input type="email" id="investorEmail" required placeholder="your@email.com">
+                    </div>
+                    <div class="form-group">
+                        <label>Phone</label>
+                        <input type="tel" id="investorPhone" placeholder="+1 (555) 000-0000">
                     </div>
                     <input type="hidden" id="investProjectId">
                 </form>
             </div>
-            <div class="modal-header">
-                <button class="btn btn-primary" style="width: 100%;" onclick="submitInvestment()">Confirm Investment</button>
+            <div class="modal-footer">
+                <button class="secondary-button" onclick="closeModal('investModal')" style="color: var(--dark); border-color: var(--gray-light);">Cancel</button>
+                <button class="cta-button" onclick="document.getElementById('investForm').dispatchEvent(new Event('submit'))">Confirm Investment</button>
             </div>
         </div>
     </div>
 
-    <!-- Detail Modal -->
-    <div class="modal-overlay" id="detailModal">
-        <div class="modal" style="max-width: 700px;">
+    <!-- Project Details Modal -->
+    <div class="modal-overlay" id="projectModal">
+        <div class="modal" style="max-width: 800px;">
             <div class="modal-header">
-                <h2 id="detailTitle">Project Details</h2>
-                <button class="modal-close" onclick="closeModal('detailModal')">&times;</button>
+                <h2 id="modalProjectTitle">Project Details</h2>
+                <button class="modal-close" onclick="closeModal('projectModal')"><i class="fas fa-times"></i></button>
             </div>
-            <div class="modal-body" id="detailContent"></div>
-            <div class="modal-header">
-                <button class="btn btn-secondary" onclick="closeModal('detailModal')">Close</button>
+            <div class="modal-body" id="modalProjectContent"></div>
+            <div class="modal-footer">
+                <button class="secondary-button" onclick="closeModal('projectModal')" style="color: var(--dark);">Close</button>
+                <button class="cta-button" id="modalInvestBtn" onclick="openInvestModal()">Invest Now</button>
             </div>
         </div>
     </div>
 
-    <script src="js/config.js"></script>
-    <script src="js/auth.js"></script>
-    <script src="js/chat.js"></script>
-    <script src="js/main.js"></script>
+    <!-- Admin Login Modal -->
+    <div class="modal-overlay" id="adminLoginModal">
+        <div class="modal" style="max-width: 450px;">
+            <div class="modal-body">
+                <div class="login-logo">
+                    <div class="logo-icon">SA</div>
+                    <h2 style="color: var(--primary); margin-bottom: 5px;">Admin Access</h2>
+                    <p style="color: var(--gray); font-size: 0.9rem;">Enter your credentials to access the admin panel</p>
+                </div>
+                <form onsubmit="handleAdminLogin(event)">
+                    <div class="form-group">
+                        <label>Admin PIN</label>
+                        <input type="password" id="loginPin" required placeholder="Enter 6-digit PIN" maxlength="6" pattern="\d{6}">
+                    </div>
+                    <button type="submit" class="cta-button" style="width: 100%;">
+                        <i class="fas fa-lock"></i> Access Dashboard
+                    </button>
+                </form>
+                <p style="text-align: center; margin-top: 20px; color: var(--gray); font-size: 0.85rem;">
+                    Default PIN: <code style="background: var(--gray-light); padding: 2px 6px; border-radius: 4px;">123456</code>
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ============================================
+        // SUPABASE CONFIGURATION (Optional)
+        // Replace with your actual Supabase credentials for production
+        // ============================================
+        const SUPABASE_URL = 'https://your-project.supabase.co';  // REPLACE THIS
+        const SUPABASE_KEY = 'your-anon-key-here';  // REPLACE THIS
+        
+        let supabase = null;
+        if (SUPABASE_URL !== 'https://your-project.supabase.co' && SUPABASE_KEY !== 'your-anon-key-here') {
+            supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+        }
+        
+        // ============================================
+        // STATE MANAGEMENT
+        // ============================================
+        let currentUser = null;
+        let projects = [];
+        let investments = [];
+        let isAuthModeLogin = true;
+        let selectedProjectId = null;
+        let deferredPrompt = null;
+        
+        // Demo Projects Data
+        const demoProjects = [
+            {
+                id: '1',
+                name: 'AI-Powered Healthcare Assistant',
+                category: 'AI/ML',
+                description: 'Revolutionary healthcare platform using artificial intelligence to provide preliminary diagnoses and connect patients with specialists. FDA approval pending. Expected ROI: 45% within 18 months.',
+                image: 'https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80',
+                goal: 500000,
+                raised: 325000,
+                min_investment: 10000,
+                status: 'active',
+                investors: 42
+            },
+            {
+                id: '2',
+                name: 'Decentralized Finance Protocol',
+                category: 'Blockchain',
+                description: 'Next-generation DeFi platform offering yield farming, lending, and cross-chain swaps with institutional-grade security. Smart contracts audited by CertiK.',
+                image: 'https://images.unsplash.com/photo-1639762681485-074b7f938ba0?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80',
+                goal: 1000000,
+                raised: 750000,
+                min_investment: 25000,
+                status: 'active',
+                investors: 28
+            },
+            {
+                id: '3',
+                name: 'Sustainable Energy Marketplace',
+                category: 'SaaS',
+                description: 'Peer-to-peer marketplace for renewable energy credits and carbon offsets. Connecting producers directly with corporate buyers. Revenue model: 2% transaction fee.',
+                image: 'https://images.unsplash.com/photo-1473341304170-971dccb5ac1e?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80',
+                goal: 300000,
+                raised: 120000,
+                min_investment: 5000,
+                status: 'active',
+                investors: 15
+            },
+            {
+                id: '4',
+                name: 'EdTech Learning Platform',
+                category: 'Web App',
+                description: 'Adaptive learning platform using ML to personalize education for K-12 students. Partnerships with 200+ schools. Monthly recurring revenue growing at 15% MoM.',
+                image: 'https://images.unsplash.com/photo-1501504905252-473c47e087f8?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80',
+                goal: 400000,
+                raised: 400000,
+                min_investment: 10000,
+                status: 'funded',
+                investors: 56
+            }
+        ];
+        
+        // ============================================
+        // INITIALIZATION
+        // ============================================
+        function initData() {
+            const savedProjects = localStorage.getItem('sa_projects');
+            if (savedProjects) {
+                projects = JSON.parse(savedProjects);
+            } else {
+                projects = [...demoProjects];
+                localStorage.setItem('sa_projects', JSON.stringify(projects));
+            }
+            
+            const savedInvestments = localStorage.getItem('sa_investments');
+            if (savedInvestments) {
+                investments = JSON.parse(savedInvestments);
+            }
+            
+            const savedUser = localStorage.getItem('sa_user');
+            if (savedUser) {
+                currentUser = JSON.parse(savedUser);
+                updateAuthUI();
+            }
+            
+            renderProjects();
+            updateStats();
+            updateAdminStats();
+        }
+        
+        function formatNumber(num) {
+            if (num >= 1000000) return (num / 1000000).toFixed(1) + 'M';
+            if (num >= 1000) return (num / 1000).toFixed(0) + 'K';
+            return num.toString();
+        }
+        
+        function showToast(message, type = 'info') {
+            const container = document.getElementById('toastContainer');
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+            const icons = { success: 'fa-check-circle', error: 'fa-exclamation-circle', warning: 'fa-exclamation-triangle', info: 'fa-info-circle' };
+            toast.innerHTML = `
+                <i class="fas ${icons[type]} toast-icon"></i>
+                <div class="toast-content">
+                    <div class="toast-title">${type.charAt(0).toUpperCase() + type.slice(1)}</div>
+                    <div class="toast-message">${message}</div>
+                </div>
+                <button class="toast-close" onclick="this.parentElement.remove()"><i class="fas fa-times"></i></button>
+            `;
+            container.appendChild(toast);
+            setTimeout(() => toast.remove(), 5000);
+        }
+        
+        function closeModal(modalId) {
+            document.getElementById(modalId).classList.remove('active');
+        }
+        
+        // ============================================
+        // NAVIGATION
+        // ============================================
+        function navigateTo(pageId) {
+            document.querySelectorAll('.page').forEach(page => page.classList.remove('active'));
+            const targetPage = document.getElementById(pageId);
+            if (targetPage) targetPage.classList.add('active');
+            
+            document.querySelectorAll('.nav-links a').forEach(nav => {
+                nav.classList.remove('active');
+                if (nav.getAttribute('data-page') === pageId) nav.classList.add('active');
+            });
+            
+            document.querySelectorAll('.bottom-nav-item').forEach(nav => {
+                nav.classList.remove('active');
+                if (nav.getAttribute('data-page') === pageId) nav.classList.add('active');
+            });
+            
+            document.querySelector('.nav-links')?.classList.remove('active');
+            window.scrollTo(0, 0);
+            
+            if (pageId === 'profile' && currentUser) loadUserProfile();
+            else if (pageId === 'projects') renderProjects();
+            
+            setTimeout(() => animatePageElements(pageId), 300);
+        }
+        
+        function animatePageElements(pageId) {
+            const page = document.getElementById(pageId);
+            if (!page) return;
+            page.querySelectorAll('.stat-card').forEach((card, i) => setTimeout(() => card.classList.add('animate'), i * 100));
+            page.querySelectorAll('.contact-item').forEach((item, i) => setTimeout(() => item.classList.add('animate'), i * 100));
+            if (pageId === 'projects') animateCounters();
+        }
+        
+        function animateCounters() {
+            const counters = document.querySelectorAll('.stat-number[data-count]');
+            counters.forEach(counter => {
+                const target = parseFloat(counter.getAttribute('data-count'));
+                const duration = 2000;
+                const step = target / (duration / 16);
+                let current = 0;
+                const timer = setInterval(() => {
+                    current += step;
+                    if (current >= target) { current = target; clearInterval(timer); }
+                    counter.textContent = current % 1 === 0 ? Math.floor(current) : current.toFixed(1);
+                }, 16);
+            });
+        }
+        
+        function updateStats() {
+            const activeProjects = projects.filter(p => p.status === 'active').length;
+            const totalRaised = projects.reduce((sum, p) => sum + p.raised, 0);
+            const totalInvestors = projects.reduce((sum, p) => sum + (p.investors || 0), 0);
+            
+            const statActive = document.querySelector('#projects .stat-card:first-child .stat-number');
+            const statRaised = document.querySelector('#projects .stat-card:nth-child(2) .stat-number');
+            const statInvestors = document.querySelector('#projects .stat-card:nth-child(3) .stat-number');
+            
+            if (statActive) statActive.setAttribute('data-count', activeProjects);
+            if (statRaised) statRaised.setAttribute('data-count', (totalRaised / 1000000).toFixed(1));
+            if (statInvestors) statInvestors.setAttribute('data-count', totalInvestors);
+        }
+        
+        function updateAdminStats() {
+            const totalRaised = projects.reduce((sum, p) => sum + p.raised, 0);
+            const totalInvestors = projects.reduce((sum, p) => sum + (p.investors || 0), 0);
+            const adminTotalProjects = document.getElementById('adminTotalProjects');
+            const adminTotalRaised = document.getElementById('adminTotalRaised');
+            const adminTotalInvestors = document.getElementById('adminTotalInvestors');
+            if (adminTotalProjects) adminTotalProjects.textContent = projects.length;
+            if (adminTotalRaised) adminTotalRaised.textContent = '$' + formatNumber(totalRaised);
+            if (adminTotalInvestors) adminTotalInvestors.textContent = totalInvestors;
+        }
+        
+        // ============================================
+        // RENDER PROJECTS
+        // ============================================
+        function renderProjects() {
+            const container = document.getElementById('projectsContainer');
+            if (!container) return;
+            
+            if (projects.length === 0) {
+                container.innerHTML = `<div class="empty-state"><i class="fas fa-folder-open"></i><h3>No Active Projects</h3><p>Check back soon for new investment opportunities.</p></div>`;
+                return;
+            }
+            
+            container.innerHTML = '<div class="projects-grid">' + projects.map(project => {
+                const progress = Math.min((project.raised / project.goal) * 100, 100);
+                const statusClass = project.status === 'funded' ? 'funded' : project.status === 'closed' ? 'closed' : '';
+                const statusText = project.status === 'funded' ? 'Fully Funded' : project.status === 'closed' ? 'Closed' : 'Active';
+                return `
+                    <div class="project-card">
+                        <div class="project-image">
+                            <img src="${project.image}" alt="${project.name}">
+                            <div class="project-badge ${statusClass}">${statusText}</div>
+                        </div>
+                        <div class="project-content">
+                            <div class="project-category">${project.category}</div>
+                            <h3>${project.name}</h3>
+                            <p class="project-description">${project.description.substring(0, 120)}...</p>
+                            <div class="project-meta">
+                                <div class="meta-item"><span class="meta-value">$${formatNumber(project.goal)}</span><span class="meta-label">Goal</span></div>
+                                <div class="meta-item"><span class="meta-value">$${formatNumber(project.raised)}</span><span class="meta-label">Raised</span></div>
+                                <div class="meta-item"><span class="meta-value">${Math.round(progress)}%</span><span class="meta-label">Funded</span></div>
+                            </div>
+                            <div class="progress-bar"><div class="progress-fill" style="width: ${progress}%"></div></div>
+                            <div class="project-footer">
+                                <button class="btn-details" onclick="showProjectDetails('${project.id}')">Details</button>
+                                <button class="btn-invest btn-full" onclick="requireAuth(() => openInvestModal('${project.id}'))" ${project.status !== 'active' ? 'disabled style="opacity:0.5;cursor:not-allowed;"' : ''}>
+                                    ${project.status === 'active' ? 'Invest Now' : 'Unavailable'}
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('') + '</div>';
+            
+            setTimeout(() => {
+                document.querySelectorAll('#projects .stat-card').forEach((card, i) => setTimeout(() => card.classList.add('animate'), i * 100));
+                animateCounters();
+            }, 100);
+        }
+        
+        function showProjectDetails(projectId) {
+            const project = projects.find(p => p.id === projectId);
+            if (!project) return;
+            selectedProjectId = projectId;
+            const progress = Math.min((project.raised / project.goal) * 100, 100);
+            document.getElementById('modalProjectTitle').textContent = project.name;
+            document.getElementById('modalProjectContent').innerHTML = `
+                <img src="${project.image}" style="width:100%;height:300px;object-fit:cover;border-radius:12px;margin-bottom:20px;">
+                <div class="project-category" style="margin-bottom:10px;">${project.category}</div>
+                <p style="color:var(--gray);line-height:1.8;margin-bottom:20px;">${project.description}</p>
+                <div class="project-meta" style="margin:20px 0;">
+                    <div class="meta-item"><span class="meta-value">$${formatNumber(project.goal)}</span><span class="meta-label">Funding Goal</span></div>
+                    <div class="meta-item"><span class="meta-value">$${formatNumber(project.raised)}</span><span class="meta-label">Raised So Far</span></div>
+                    <div class="meta-item"><span class="meta-value">$${formatNumber(project.min_investment)}</span><span class="meta-label">Min Investment</span></div>
+                </div>
+                <div class="progress-bar"><div class="progress-fill" style="width:${progress}%"></div></div>
+                <p style="text-align:center;color:var(--gray);margin-top:10px;">${Math.round(progress)}% funded by ${project.investors || 0} investors</p>
+            `;
+            const investBtn = document.getElementById('modalInvestBtn');
+            investBtn.onclick = () => { closeModal('projectModal'); requireAuth(() => openInvestModal(projectId)); };
+            investBtn.style.display = project.status === 'active' ? 'inline-block' : 'none';
+            document.getElementById('projectModal').classList.add('active');
+        }
+        
+        function openInvestModal(projectId) {
+            if (!projectId && selectedProjectId) projectId = selectedProjectId;
+            if (projectId) {
+                selectedProjectId = projectId;
+                const project = projects.find(p => p.id === projectId);
+                document.getElementById('investProjectDetails').innerHTML = `<div style="background:var(--light);padding:15px;border-radius:8px;margin-bottom:20px;"><strong style="color:var(--primary);">${project.name}</strong><p style="color:var(--gray);font-size:0.9rem;margin-top:5px;">Min investment: $${formatNumber(project.min_investment)}</p></div>`;
+                document.getElementById('investProjectId').value = projectId;
+                if (currentUser) {
+                    document.getElementById('investorName').value = currentUser.user_metadata?.full_name || '';
+                    document.getElementById('investorEmail').value = currentUser.email || '';
+                }
+            }
+            document.getElementById('investModal').classList.add('active');
+        }
+        
+        function updateInvestAmount() {
+            const select = document.getElementById('investPlan');
+            const customGroup = document.getElementById('customAmountGroup');
+            customGroup.style.display = select.value === 'custom' ? 'block' : 'none';
+        }
+        
+        function handleInvest(e) {
+            e.preventDefault();
+            if (!currentUser) { showToast('Please login to invest', 'warning'); closeModal('investModal'); showLoginModal(); return; }
+            
+            const projectId = document.getElementById('investProjectId').value;
+            const plan = document.getElementById('investPlan').value;
+            const name = document.getElementById('investorName').value;
+            const email = document.getElementById('investorEmail').value;
+            const phone = document.getElementById('investorPhone').value;
+            
+            let amount = 0;
+            if (plan === 'custom') amount = parseInt(document.getElementById('customAmount').value) || 0;
+            else { const option = document.querySelector(`#investPlan option[value="${plan}"]`); amount = parseInt(option?.getAttribute('data-amount')) || 0; }
+            
+            if (!amount || amount < 1000) { showToast('Please enter a valid investment amount (minimum $1,000)', 'error'); return; }
+            const project = projects.find(p => p.id === projectId);
+            if (amount < project.min_investment) { showToast(`Minimum investment is $${formatNumber(project.min_investment)}`, 'error'); return; }
+            
+            const investment = {
+                id: 'inv_' + Date.now(), project_id: projectId, project_name: project.name,
+                investor_name: name, investor_email: email, investor_phone: phone,
+                amount: amount, plan: plan, status: 'pending', user_id: currentUser?.id,
+                created_at: new Date().toISOString(), expected_return: amount * 0.34
+            };
+            investments.push(investment);
+            project.raised += amount;
+            project.investors = (project.investors || 0) + 1;
+            if (project.raised >= project.goal) project.status = 'funded';
+            
+            localStorage.setItem('sa_projects', JSON.stringify(projects));
+            localStorage.setItem('sa_investments', JSON.stringify(investments));
+            
+            closeModal('investModal');
+            showToast(`Investment of $${formatNumber(amount)} submitted successfully!`, 'success');
+            document.getElementById('investForm').reset();
+            document.getElementById('customAmountGroup').style.display = 'none';
+            if (document.getElementById('projects').classList.contains('active')) renderProjects();
+            if (currentUser && document.getElementById('profile').classList.contains('active')) loadUserProfile();
+            updateAdminStats();
+        }
+        
+        // ============================================
+        // AUTHENTICATION
+        // ============================================
+        function showLoginModal() {
+            isAuthModeLogin = true;
+            document.getElementById('authModalTitle').textContent = 'Login';
+            document.getElementById('authSubmitBtn').textContent = 'Login';
+            document.getElementById('switchAuthLink').innerHTML = "Don't have an account? Register";
+            document.getElementById('registerFields').style.display = 'none';
+            document.getElementById('loginFields').style.display = 'block';
+            document.getElementById('authModal').classList.add('active');
+        }
+        
+        function showRegisterModal() {
+            isAuthModeLogin = false;
+            document.getElementById('authModalTitle').textContent = 'Register';
+            document.getElementById('authSubmitBtn').textContent = 'Register';
+            document.getElementById('switchAuthLink').innerHTML = 'Already have an account? Login';
+            document.getElementById('registerFields').style.display = 'block';
+            document.getElementById('loginFields').style.display = 'block';
+            document.getElementById('authModal').classList.add('active');
+        }
+        
+        function switchAuthMode() {
+            isAuthModeLogin = !isAuthModeLogin;
+            if (isAuthModeLogin) {
+                document.getElementById('authModalTitle').textContent = 'Login';
+                document.getElementById('authSubmitBtn').textContent = 'Login';
+                document.getElementById('switchAuthLink').innerHTML = "Don't have an account? Register";
+                document.getElementById('registerFields').style.display = 'none';
+            } else {
+                document.getElementById('authModalTitle').textContent = 'Register';
+                document.getElementById('authSubmitBtn').textContent = 'Register';
+                document.getElementById('switchAuthLink').innerHTML = 'Already have an account? Login';
+                document.getElementById('registerFields').style.display = 'block';
+            }
+        }
+        
+        async function handleAuthSubmit(e) {
+            e.preventDefault();
+            const email = document.getElementById('authEmail').value;
+            const password = document.getElementById('authPassword').value;
+            
+            if (isAuthModeLogin) {
+                if (supabase) {
+                    try {
+                        const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+                        if (error) throw error;
+                        currentUser = data.user;
+                        localStorage.setItem('sa_user', JSON.stringify(currentUser));
+                        updateAuthUI();
+                        closeModal('authModal');
+                        showToast(`Welcome back, ${currentUser.email}!`, 'success');
+                        await loadUserInvestments();
+                    } catch (error) { showToast(error.message, 'error'); }
+                } else {
+                    currentUser = { id: 'demo_' + Date.now(), email: email, user_metadata: { full_name: email.split('@')[0] } };
+                    localStorage.setItem('sa_user', JSON.stringify(currentUser));
+                    updateAuthUI();
+                    closeModal('authModal');
+                    showToast(`Welcome back, ${email}!`, 'success');
+                }
+            } else {
+                const fullName = document.getElementById('registerName').value;
+                const confirmPassword = document.getElementById('confirmPassword').value;
+                if (password !== confirmPassword) { showToast('Passwords do not match', 'error'); return; }
+                if (supabase) {
+                    try {
+                        const { data, error } = await supabase.auth.signUp({ email, password, options: { data: { full_name: fullName } } });
+                        if (error) throw error;
+                        currentUser = data.user;
+                        localStorage.setItem('sa_user', JSON.stringify(currentUser));
+                        updateAuthUI();
+                        closeModal('authModal');
+                        showToast('Registration successful! Please check your email to verify.', 'success');
+                    } catch (error) { showToast(error.message, 'error'); }
+                } else {
+                    currentUser = { id: 'demo_' + Date.now(), email: email, user_metadata: { full_name: fullName } };
+                    localStorage.setItem('sa_user', JSON.stringify(currentUser));
+                    updateAuthUI();
+                    closeModal('authModal');
+                    showToast(`Welcome to SupremeAmer, ${fullName}!`, 'success');
+                }
+            }
+        }
+        
+        function logout() {
+            if (supabase) supabase.auth.signOut();
+            currentUser = null;
+            localStorage.removeItem('sa_user');
+            updateAuthUI();
+            showToast('Logged out successfully', 'success');
+            navigateTo('home');
+        }
+        
+        function updateAuthUI() {
+            const authNavBtn = document.getElementById('authNavBtn');
+            const logoutNavBtn = document.getElementById('logoutNavBtn');
+            const profileLink = document.getElementById('profileLink');
+            const bottomProfileBtn = document.getElementById('bottomProfileBtn');
+            const adminLink = document.getElementById('adminLink');
+            
+            if (currentUser) {
+                if (authNavBtn) authNavBtn.style.display = 'none';
+                if (logoutNavBtn) logoutNavBtn.style.display = 'list-item';
+                if (profileLink) profileLink.style.display = 'list-item';
+                if (bottomProfileBtn) bottomProfileBtn.style.display = 'flex';
+                if (currentUser.email === 'admin@supremeamer.com' && adminLink) adminLink.style.display = 'list-item';
+            } else {
+                if (authNavBtn) authNavBtn.style.display = 'list-item';
+                if (logoutNavBtn) logoutNavBtn.style.display = 'none';
+                if (profileLink) profileLink.style.display = 'none';
+                if (bottomProfileBtn) bottomProfileBtn.style.display = 'none';
+                if (adminLink) adminLink.style.display = 'none';
+            }
+        }
+        
+        function requireAuth(callback) {
+            if (currentUser) callback();
+            else { showToast('Please login to continue', 'warning'); showLoginModal(); }
+        }
+        
+        async function loadUserProfile() {
+            if (!currentUser) { navigateTo('home'); return; }
+            document.getElementById('profileName').textContent = currentUser.user_metadata?.full_name || currentUser.email?.split('@')[0] || 'Investor';
+            document.getElementById('profileEmail').textContent = currentUser.email;
+            await loadUserInvestments();
+            renderUserInvestments();
+        }
+        
+        async function loadUserInvestments() {
+            if (!currentUser) return;
+            const allInvestments = JSON.parse(localStorage.getItem('sa_investments') || '[]');
+            investments = allInvestments.filter(inv => inv.user_id === currentUser.id || inv.investor_email === currentUser.email);
+            if (supabase) {
+                try {
+                    const { data, error } = await supabase.from('investments').select('*').eq('user_id', currentUser.id);
+                    if (!error && data && data.length > 0) { investments = data; localStorage.setItem('sa_investments', JSON.stringify([...allInvestments, ...data])); }
+                } catch (error) { console.error(error); }
+            }
+            updateProfileStats();
+        }
+        
+        function updateProfileStats() {
+            const totalInvested = investments.reduce((sum, inv) => sum + inv.amount, 0);
+            const totalCount = investments.length;
+            const expectedReturn = totalInvested * 0.34;
+            const totalInvestedEl = document.getElementById('totalInvested');
+            const totalInvestmentsEl = document.getElementById('totalInvestments');
+            const expectedReturnEl = document.getElementById('expectedReturn');
+            if (totalInvestedEl) totalInvestedEl.textContent = '$' + formatNumber(totalInvested);
+            if (totalInvestmentsEl) totalInvestmentsEl.textContent = totalCount;
+            if (expectedReturnEl) expectedReturnEl.textContent = '$' + formatNumber(expectedReturn);
+        }
+        
+        function renderUserInvestments() {
+            const container = document.getElementById('investmentsList');
+            if (!container) return;
+            if (investments.length === 0) {
+                container.innerHTML = `<div class="empty-state"><i class="fas fa-chart-line"></i><h3>No investments yet</h3><p>Start your investment journey today!</p><button class="cta-button" onclick="navigateTo('projects')" style="margin-top:20px;">Browse Projects</button></div>`;
+                return;
+            }
+            container.innerHTML = investments.map(inv => {
+                const project = projects.find(p => p.id === inv.project_id);
+                return `<div class="project-card"><div class="project-content"><h3>${inv.project_name || project?.name || 'Unknown Project'}</h3><div class="project-meta"><div class="meta-item"><span class="meta-value">$${formatNumber(inv.amount)}</span><span class="meta-label">Invested</span></div><div class="meta-item"><span class="meta-value">$${formatNumber(inv.expected_return || inv.amount * 0.34)}</span><span class="meta-label">Expected Return</span></div></div><div class="progress-bar"><div class="progress-fill" style="width:100%"></div></div><p><small>Invested on ${new Date(inv.created_at).toLocaleDateString()}</small></p><span style="display:inline-block;background:var(--warning);color:white;padding:4px 12px;border-radius:20px;font-size:0.8rem;">${inv.status}</span></div></div>`;
+            }).join('');
+        }
+        
+        // ============================================
+        // CHAT FUNCTIONALITY
+        // ============================================
+        function toggleChat() {
+            document.getElementById('chatContainer').classList.toggle('active');
+        }
+        
+        function sendChatMessage() {
+            const input = document.getElementById('chatInput');
+            const message = input.value.trim();
+            if (!message) return;
+            const messagesContainer = document.getElementById('chatMessages');
+            const userMessageDiv = document.createElement('div');
+            userMessageDiv.className = 'chat-message user';
+            userMessageDiv.innerHTML = `${message}<div style="font-size:0.7rem;margin-top:5px;opacity:0.7;">Just now</div>`;
+            messagesContainer.appendChild(userMessageDiv);
+            input.value = '';
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+            setTimeout(() => {
+                const supportMessageDiv = document.createElement('div');
+                supportMessageDiv.className = 'chat-message support';
+                supportMessageDiv.innerHTML = `Thank you for your message! A support agent will respond shortly.<div style="font-size:0.7rem;margin-top:5px;opacity:0.7;">Just now</div>`;
+                messagesContainer.appendChild(supportMessageDiv);
+                messagesContainer.scrollTop = messagesContainer.scrollHeight;
+            }, 1000);
+        }
+        
+        // ============================================
+        // THEME TOGGLE
+        // ============================================
+        function toggleTheme() {
+            const currentTheme = document.documentElement.getAttribute('data-theme');
+            const themeToggleBtn = document.getElementById('themeToggle');
+            if (currentTheme === 'dark') {
+                document.documentElement.removeAttribute('data-theme');
+                localStorage.setItem('theme', 'light');
+                themeToggleBtn.innerHTML = '<i class="fas fa-moon"></i>';
+            } else {
+                document.documentElement.setAttribute('data-theme', 'dark');
+                localStorage.setItem('theme', 'dark');
+                themeToggleBtn.innerHTML = '<i class="fas fa-sun"></i>';
+            }
+        }
+        
+        function initTheme() {
+            const savedTheme = localStorage.getItem('theme');
+            const themeToggleBtn = document.getElementById('themeToggle');
+            if (savedTheme === 'dark') {
+                document.documentElement.setAttribute('data-theme', 'dark');
+                themeToggleBtn.innerHTML = '<i class="fas fa-sun"></i>';
+            } else {
+                themeToggleBtn.innerHTML = '<i class="fas fa-moon"></i>';
+            }
+        }
+        
+        // ============================================
+        // PWA INSTALL
+        // ============================================
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+            document.getElementById('installBanner').classList.add('show');
+        });
+        
+        function installApp() {
+            if (deferredPrompt) {
+                deferredPrompt.prompt();
+                deferredPrompt.userChoice.then((choiceResult) => {
+                    if (choiceResult.outcome === 'accepted') showToast('App installed successfully!', 'success');
+                    deferredPrompt = null;
+                    document.getElementById('installBanner').classList.remove('show');
+                });
+            }
+        }
+        
+        function dismissInstall() {
+            document.getElementById('installBanner').classList.remove('show');
+        }
+        
+        // ============================================
+        // ADMIN FUNCTIONS
+        // ============================================
+        function handleAdminLogin(e) {
+            e.preventDefault();
+            const pin = document.getElementById('loginPin').value;
+            if (pin === '123456') {
+                closeModal('adminLoginModal');
+                showToast('Welcome to Admin Dashboard', 'success');
+                navigateTo('admin');
+                updateAdminStats();
+            } else {
+                showToast('Invalid PIN', 'error');
+            }
+        }
+        
+        function logoutAdmin() {
+            navigateTo('home');
+            showToast('Logged out successfully', 'success');
+        }
+        
+        // ============================================
+        // EVENT LISTENERS & INIT
+        // ============================================
+        document.addEventListener('click', (e) => {
+            const link = e.target.closest('[data-page]');
+            if (link && !link.closest('.footer-nav')) { e.preventDefault(); const pageId = link.getAttribute('data-page'); if (pageId) navigateTo(pageId); }
+        });
+        
+        document.querySelector('.mobile-menu')?.addEventListener('click', () => document.querySelector('.nav-links')?.classList.toggle('active'));
+        window.addEventListener('scroll', () => { const header = document.querySelector('header'); if (window.scrollY > 50) header?.classList.add('scrolled'); else header?.classList.remove('scrolled'); });
+        window.addEventListener('online', () => { document.getElementById('offlineIndicator')?.classList.remove('show'); showToast('Back online!', 'success'); });
+        window.addEventListener('offline', () => document.getElementById('offlineIndicator')?.classList.add('show'));
+        document.getElementById('contactForm')?.addEventListener('submit', (e) => { e.preventDefault(); showToast('Message sent! We will respond within 24 hours.', 'success'); e.target.reset(); });
+        document.querySelectorAll('.modal-overlay').forEach(overlay => { overlay.addEventListener('click', (e) => { if (e.target === overlay) overlay.classList.remove('active'); }); });
+        
+        // Make functions global
+        window.navigateTo = navigateTo; window.showProjectDetails = showProjectDetails; window.openInvestModal = openInvestModal;
+        window.closeModal = closeModal; window.handleInvest = handleInvest; window.updateInvestAmount = updateInvestAmount;
+        window.handleAdminLogin = handleAdminLogin; window.logoutAdmin = logoutAdmin; window.installApp = installApp;
+        window.dismissInstall = dismissInstall; window.showToast = showToast; window.showLoginModal = showLoginModal;
+        window.showRegisterModal = showRegisterModal; window.switchAuthMode = switchAuthMode; window.handleAuthSubmit = handleAuthSubmit;
+        window.logout = logout; window.requireAuth = requireAuth; window.toggleChat = toggleChat; window.sendChatMessage = sendChatMessage;
+        window.toggleTheme = toggleTheme;
+        
+        initTheme();
+        initData();
+        if (!navigator.onLine) document.getElementById('offlineIndicator')?.classList.add('show');
+        const urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.get('admin') === 'true') document.getElementById('adminLoginModal')?.classList.add('active');
+        setTimeout(() => { const banner = document.getElementById('installBanner'); if (banner && banner.classList.contains('show')) setTimeout(() => banner.classList.remove('show'), 5000); }, 5000);
+    </script>
 </body>
 </html>
